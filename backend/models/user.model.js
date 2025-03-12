@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     bio: { type: String, default: "" },
     profilepic: { type: String, default: "" },
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    follower: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     gender: { type: String, enum: ['male', 'female', 'trans'] },
     bookmarks: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
     posts: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
