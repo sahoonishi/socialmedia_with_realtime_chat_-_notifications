@@ -1,4 +1,4 @@
-import { mongoose } from "mongoose";
+import mongoose from "mongoose";
 const userSchema = new mongoose.Schema(
   {
     username: { type: String, required: true, unique: true },
@@ -9,8 +9,8 @@ const userSchema = new mongoose.Schema(
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     follower: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     gender: { type: String, enum: ['male', 'female', 'trans'] },
-    bookmarks: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
-    posts: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
+    bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },
   { timestamps: true }
 );

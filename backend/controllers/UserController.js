@@ -1,8 +1,8 @@
 import { User } from "../models/user.model.js";
-import bcrypt from "bcrypt.js";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { logout } from "./UserController";
-import getDataUri from "./../utils/dataURI";
+// import { logout } from "./UserController";
+import getDataUri from "./../utils/dataURI.js";
 // REGISTER
 export const register = async (req, res) => {
   try {
@@ -16,7 +16,7 @@ export const register = async (req, res) => {
     let user = await User.findOne({ email });
     if (user) {
       return res.status(401).json({
-        message: "Email already exists , please login",
+        message: "Email already exists,please login",
         success: false,
       });
     }
@@ -29,6 +29,7 @@ export const register = async (req, res) => {
     return res.status(201).json({
       message: "Account created succcessfully",
       success: true,
+      user
     });
   } catch (error) {
     console.log(error);
@@ -91,8 +92,9 @@ export const logout = async (_, res) => {
 export const getProfile = async (req, res) => {
   try {
     const userid = req.params.id;
-    let user = await User.findById(userid);
+    let user = await User.findById(userid).select("-password");
     return res.status(200).json({
+      message:"Profile found",
       user,
       success: true,
     });
@@ -120,7 +122,7 @@ export const updateProfile = async (req, res) => {
     }
     if (bio) user.bio = bio;
     if (gender) user.gender = gender;
-    if (bio) user.profilepic = cloudResponse.secure_url;
+    if (bio) user.profilepic = cloudResponse?.secure_url;
     await user.save();
     return res.status(200).json({
       message: "profle updated",
