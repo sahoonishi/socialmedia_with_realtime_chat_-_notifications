@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 // import { logout } from "./UserController";
 import getDataUri from "./../utils/dataURI.js";
+import { Post } from "../models/Post.model.js";
 // REGISTER
 export const register = async (req, res) => {
   try {
@@ -29,7 +30,7 @@ export const register = async (req, res) => {
     return res.status(201).json({
       message: "Account created succcessfully",
       success: true,
-      user
+      user,
     });
   } catch (error) {
     console.log(error);
@@ -62,6 +63,25 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1d",
     });
+    const populatedPosts = await Promise.all(
+      user.posts.map(async (postId) => {
+        const post = await Post.findById(postId);
+        if (post.author.equals(user._id)) {
+          return post;
+        }
+        return null;
+      })
+    );
+    user = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      profilepic: user.profilepic,
+      bio: user.bio,
+      follower: user.follower,
+      following: user.following,
+      posts: populatedPosts,
+    };
     return res
       .cookie("token", token, {
         httpOnly: true,
@@ -94,7 +114,7 @@ export const getProfile = async (req, res) => {
     const userid = req.params.id;
     let user = await User.findById(userid).select("-password");
     return res.status(200).json({
-      message:"Profile found",
+      message: "Profile found",
       user,
       success: true,
     });
@@ -179,28 +199,24 @@ export const followUnfollow = async (req, res) => {
         User.updateOne({ _id: sourceId }, { $pull: { following: targetId } }),
         User.updateOne({ _id: targetId }, { $pull: { following: sourceId } }),
       ]);
-      return res
-        .status(200)
-        .json({
-          message: `You have unfollowed ${targetuser.username}`,
-          success: true,
-          Unfolloweduser: targetuser,
-          you: sourceuser,
-        });
+      return res.status(200).json({
+        message: `You have unfollowed ${targetuser.username}`,
+        success: true,
+        Unfolloweduser: targetuser,
+        you: sourceuser,
+      });
     } else {
       // follow logic
       await Promise.all([
         User.updateOne({ _id: sourceId }, { $push: { following: targetId } }),
         User.updateOne({ _id: targetId }, { $push: { follower: sourceId } }),
       ]);
-      return res
-        .status(200)
-        .json({
-          message: `You have followed ${targetuser.username}`,
-          success: true,
-          followeduser: targetuser,
-          you: sourceuser,
-        });
+      return res.status(200).json({
+        message: `You have followed ${targetuser.username}`,
+        success: true,
+        followeduser: targetuser,
+        you: sourceuser,
+      });
     }
   } catch (error) {
     console.log(error);

@@ -8,10 +8,14 @@ const userSchema = new mongoose.Schema(
     profilepic: { type: String, default: "" },
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     follower: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    gender: { type: String, enum: ['male', 'female', 'trans'] },
+    gender: {
+      type: String,
+      enum: ["male", "female", "trans"],
+      default: "male",
+    },
     bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },
   { timestamps: true }
 );
-export const User = mongoose.model("User",userSchema);
+export const User = mongoose.model("User", userSchema);
