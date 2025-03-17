@@ -27,10 +27,12 @@ export const register = async (req, res) => {
       email,
       password: hasPassword,
     });
+    const userResponse = user.toObject();
+    delete userResponse.password;
     return res.status(201).json({
       message: "Account created succcessfully",
       success: true,
-      user,
+      user:userResponse,
     });
   } catch (error) {
     console.log(error);
