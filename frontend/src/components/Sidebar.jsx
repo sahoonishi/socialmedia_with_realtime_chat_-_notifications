@@ -12,29 +12,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-const items = [
-  // { icons: <Logo/>, text: "" },
-  { icons: <Home />, text: "Home" },
-  { icons: <Search />, text: "Search" },
-  { icons: <TrendingUp />, text: "Explore" },
-  { icons: <MessageCircle />, text: "Messages" },
-  { icons: <Heart />, text: "Notifications" },
-  { icons: <PlusSquare />, text: "Create post" },
-  {
-    icons: (
-      <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
-    ),
-    text: "Profile",
-  },
-  { icons: <LogOut />, text: "Logout" },
-];
+
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {user}=useSelector(store=>store.auth)
+  console.log(user);
+
 
   //                                        LOGOUT FUNCTION
   const logoutHandler = async () => {
@@ -55,8 +42,27 @@ const Sidebar = () => {
   const sidebarHandler = (textType) => {
     if (textType === "Logout") logoutHandler();
   };
+  const items = [
+    // { icons: <Logo/>, text: "" },
+    { icons: <Home />, text: "Home" },
+    { icons: <Search />, text: "Search" },
+    { icons: <TrendingUp />, text: "Explore" },
+    { icons: <MessageCircle />, text: "Messages" },
+    { icons: <Heart />, text: "Notifications" },
+    { icons: <PlusSquare />, text: "Create post" },
+    {
+      icons: (
+        <Avatar>
+          <AvatarImage src={`${user?.profilepic}`} className="object-cover" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+      ),
+      text: "Profile",
+    },
+    { icons: <LogOut />, text: "Logout" },
+  ];
   return (
-    <div className=" py-4 border-r border-gray-800 px-2 flex flex-col justify-around w-[15%]">
+    <div className=" py-4 border-r border-gray-800 px-2 flex flex-col justify-around w-[25%]">
       {items.map((item, _) => {
         return (
           <div

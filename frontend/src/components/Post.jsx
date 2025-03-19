@@ -17,8 +17,20 @@ import {
 import { Button } from "./ui/button";
 import { Bookmark, MessageCircle, Send } from "lucide-react";
 import CommentDialog from "./CommentDialog";
+import { useState } from "react";
 
 const Post = () => {
+  const [postText,setPostText]=useState("");
+  const [open,setOpen]=useState(false);
+  const postTextHandler=(e)=>{
+      const text = e.target.value;
+      setPostText(text.trim());
+      // console.log(postText,"====");
+  }
+  const postComment=()=>{
+    console.log(postText);
+    setPostText("");
+  }
   return (
     <div className="border flex flex-col  min-w-lg min-h-sm">
       {/* HEADER */}
@@ -46,18 +58,18 @@ const Post = () => {
         </Dialog>
       </div>
       {/*PHOTO*/}
-      <div className="border rounded-lg h-[500px] w-full ">
+      <div className="border rounded-lg h-[400px] max-h-[500px] w-full ">
         <img
           src="https://images.unsplash.com/photo-1611199340099-91a595a86812?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGF1dGhvcnxlbnwwfHwwfHx8MA%3D%3D"
           alt="postimage"
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-contain rounded-lg"
         />
       </div>
       {/* FOOTER */}
       <div className="flex justify-between p-2">
         <div className="flex gap-4 justify-center items-center">
           <FaHeart size={25} className="fill-red-600"/>
-          <MessageCircle size={25} />
+          <MessageCircle size={25} onClick={()=>setOpen(true)}/>
           <Send size={25} />
         </div>
         <Bookmark size={25}/>
@@ -66,11 +78,14 @@ const Post = () => {
       <div>
         <span className="block font-semibold border">1232 likes</span>
         <p><span>user</span>caption</p>
-        <span>View all 12 comments</span>
-        <CommentDialog/>
-        <div className="flex justify-between items-center ">
-          <input type="text" placeholder="Add a comment..." className="focus:outline-none w-full text-sm" />
-          <div>post</div>
+        <span onClick={()=>setOpen(true)}>View all 12 comments</span>
+        <CommentDialog open={open} setOpen={setOpen}   />
+        <div className="flex px-1 justify-between items-center ">
+          <input type="text" value={postText} onChange={postTextHandler} placeholder="Add a comment..." className="focus:outline-none w-full text-sm" />
+          {
+            postText && <div onClick={postComment} className="text-blue-500">post</div>
+          }
+          
         </div>
       </div>
     </div>
