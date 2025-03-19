@@ -19,7 +19,7 @@ import { Bookmark, MessageCircle, Send } from "lucide-react";
 import CommentDialog from "./CommentDialog";
 import { useState } from "react";
 
-const Post = () => {
+const Post = ({post}) => {
   const [postText,setPostText]=useState("");
   const [open,setOpen]=useState(false);
   const postTextHandler=(e)=>{
@@ -31,6 +31,7 @@ const Post = () => {
     console.log(postText);
     setPostText("");
   }
+  console.log(post)
   return (
     <div className="border flex flex-col  min-w-lg min-h-sm">
       {/* HEADER */}
@@ -58,7 +59,7 @@ const Post = () => {
         </Dialog>
       </div>
       {/*PHOTO*/}
-      <div className="border rounded-lg h-[400px] max-h-[500px] w-full ">
+      <div className="border rounded-lg h-[400px] max-h-[500px] w-[60%] ">
         <img
           src="https://images.unsplash.com/photo-1611199340099-91a595a86812?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGF1dGhvcnxlbnwwfHwwfHx8MA%3D%3D"
           alt="postimage"

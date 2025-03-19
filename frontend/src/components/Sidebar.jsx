@@ -7,29 +7,33 @@ import {
   Search,
   TrendingUp,
 } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
-
+import { setAuthUser } from "../redux/authSlice";
+import CreatePost from "./CreatePost";
 
 const Sidebar = () => {
+  const [open,setOpen]=useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {user}=useSelector(store=>store.auth)
-  console.log(user);
+  const { user } = useSelector((store) => store.auth);
+  
 
-
-  //                                        LOGOUT FUNCTION
+  //LOGOUT FUNCTION
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/logout`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/user/logout`,
+        {
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
+        dispatch(setAuthUser(null));
         navigate("/login");
         toast.success(res.data.message);
       }
@@ -38,9 +42,13 @@ const Sidebar = () => {
       toast.error(error?.response?.data?.message);
     }
   };
-  //                                    WHOLE SIDEBAR FUNCTION
+  //WHOLE SIDEBAR FUNCTION
   const sidebarHandler = (textType) => {
-    if (textType === "Logout") logoutHandler();
+    if (textType === "Logout") {
+      logoutHandler();
+    }else if(textType === "Create"){
+      setOpen(true);
+    }
   };
   const items = [
     // { icons: <Logo/>, text: "" },
@@ -49,7 +57,7 @@ const Sidebar = () => {
     { icons: <TrendingUp />, text: "Explore" },
     { icons: <MessageCircle />, text: "Messages" },
     { icons: <Heart />, text: "Notifications" },
-    { icons: <PlusSquare />, text: "Create post" },
+    { icons: <PlusSquare />, text: "Create" },
     {
       icons: (
         <Avatar>
@@ -75,6 +83,7 @@ const Sidebar = () => {
           </div>
         );
       })}
+      <CreatePost open={open} setOpen={setOpen} />
     </div>
   );
 };

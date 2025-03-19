@@ -6,7 +6,7 @@ import connectDB from "./utils/db.js";
 import userRouter from "./routes/user.route.js";
 import postRouter from "./routes/post.route.js";
 import messageRouter from "./routes/message.route.js";
-dotenv.config({}); // write this on the top otherwise someties it wont work
+dotenv.config(); // write this on the top otherwise someties it wont work
 
 const app = express();
 const port = process.env.PORT || 8000;

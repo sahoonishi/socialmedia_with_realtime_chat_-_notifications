@@ -44,8 +44,14 @@ export const addNewPost = async (req, res) => {
       successs: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in addNewPost:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+      success: false,
+    });
   }
+  
 };
 // GET ALL POST
 export const getAllPost = async (req, res) => {
