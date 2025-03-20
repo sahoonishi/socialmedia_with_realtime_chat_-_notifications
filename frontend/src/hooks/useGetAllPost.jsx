@@ -11,7 +11,7 @@ const useGetAllPost =() => {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/post/getallposts`, {
           withCredentials: true,
         });
-        console.log(res.data);
+        // console.log(res.data);
         if(res.data.success){
             dispatch(setPosts(res.data.posts));
         }

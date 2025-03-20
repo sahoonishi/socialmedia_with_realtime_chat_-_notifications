@@ -18,6 +18,7 @@ import { Button } from "./ui/button";
 import { Bookmark, MessageCircle, Send } from "lucide-react";
 import CommentDialog from "./CommentDialog";
 import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const Post = ({post}) => {
   const [postText,setPostText]=useState("");
@@ -31,17 +32,15 @@ const Post = ({post}) => {
     console.log(postText);
     setPostText("");
   }
-  console.log(post)
   return (
-    <div className="border flex flex-col  min-w-lg min-h-sm">
+    <div className="border flex flex-col w-96 max-h-sm">
       {/* HEADER */}
       <div className="flex justify-between items-center">
         <div className="flex gap-1">
-          <img
-            src="htps://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXskeEul9fxfJ7zZiixluTO65k-oJpr6Hw7e2OOj08DNxoN-oRnzqbd0b4QnAZVI8aLcg&usqp=CAU"
-            alt="dp"
-            className="h-8 rounded-full w-8"
-          />
+          <Avatar>
+            <AvatarImage src={post?.author?.profilepic} alt="Profile_Image" className="object-cover" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
           <div>username</div>
           <div>13h</div>
         </div>
@@ -59,11 +58,10 @@ const Post = ({post}) => {
         </Dialog>
       </div>
       {/*PHOTO*/}
-      <div className="border rounded-lg h-[400px] max-h-[500px] w-[60%] ">
+      <div className="border rounded-lg h-[400px] max-h-[500px] w-full ">
         <img
-          src="https://images.unsplash.com/photo-1611199340099-91a595a86812?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGF1dGhvcnxlbnwwfHwwfHx8MA%3D%3D"
-          alt="postimage"
-          className="w-full h-full object-contain rounded-lg"
+          src={post?.image}
+          className="w-full h-full object-cover rounded-lg"
         />
       </div>
       {/* FOOTER */}
@@ -78,7 +76,7 @@ const Post = ({post}) => {
       {/* Comment likes */}
       <div>
         <span className="block font-semibold border">1232 likes</span>
-        <p><span>user</span>caption</p>
+        <p><span className="font-semibold">{post?.author.username} </span>{post?.caption}</p>
         <span onClick={()=>setOpen(true)}>View all 12 comments</span>
         <CommentDialog open={open} setOpen={setOpen}   />
         <div className="flex px-1 justify-between items-center ">

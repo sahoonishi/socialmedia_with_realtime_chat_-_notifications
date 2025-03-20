@@ -7,12 +7,17 @@ import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setPosts } from "../redux/postSlice";
 const CreatePost = ({ open, setOpen }) => {
   const [file, setFile] = useState("");
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
+  const {user} = useSelector(store=>store.auth);
+  const {posts} = useSelector(store=>store.post);
   const imageRef = useRef();
+  const dispatch = useDispatch();
   const imageHandler = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -33,8 +38,10 @@ const CreatePost = ({ open, setOpen }) => {
           },
           withCredentials:true
         });
-        if(res.data.success){
+        if(res.data.successs){
           toast.success(res.data.message);
+          dispatch(setPosts([res.data.post,...posts]));
+          setOpen(false);
         }
     } catch (error) {
       console.log(error);
@@ -51,11 +58,11 @@ const CreatePost = ({ open, setOpen }) => {
         </DialogHeader>
         <div className="flex gap-3 items-center">
           <Avatar>
-            <AvatarImage src="" alt="img" />
+            <AvatarImage src={user.profilepic} alt="img" className="object-cover"/>
             <AvatarFallback>USER</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xs font-semibold">username</h1>
+            <h1 className="text-xs font-semibold">{user.username}</h1>
             <div className="text-gray-400 text-xs">bio</div>
           </div>
         </div>
@@ -63,7 +70,7 @@ const CreatePost = ({ open, setOpen }) => {
         value={caption}
         onChange={(e)=>setCaption(e.target.value)}
           className="border focus-visible:ring-transparent"
-          placeholder="caption..."
+          placeholder="caption..." 
         />
         {imagePreview && (
           <div className="w-full h-64 flex justify-center items-center">
@@ -88,7 +95,7 @@ const CreatePost = ({ open, setOpen }) => {
         </div>
         {imagePreview &&
           (loading ? (
-            <Button>
+            <Button className="w-fit mx-auto">
               <Loader2 className="mr-2 animate-spin size-4" />
               posting...
             </Button>
