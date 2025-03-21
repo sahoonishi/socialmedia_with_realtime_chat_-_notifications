@@ -13,7 +13,8 @@ const useGetAllPost =() => {
         });
         // console.log(res.data);
         if(res.data.success){
-            dispatch(setPosts(res.data.posts));
+          dispatch(setPosts(res.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))));
+
         }
       } catch (error) {
         console.log(error);

@@ -40,7 +40,8 @@ const CreatePost = ({ open, setOpen }) => {
         });
         if(res.data.successs){
           toast.success(res.data.message);
-          dispatch(setPosts([res.data.post,...posts]));
+          dispatch(setPosts([...posts, res.data.post].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))));
+
           setOpen(false);
         }
     } catch (error) {
@@ -58,11 +59,11 @@ const CreatePost = ({ open, setOpen }) => {
         </DialogHeader>
         <div className="flex gap-3 items-center">
           <Avatar>
-            <AvatarImage src={user.profilepic} alt="img" className="object-cover"/>
-            <AvatarFallback>USER</AvatarFallback>
+            <AvatarImage src={user?.profilepic} alt="img" className="object-cover"/>
+            <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xs font-semibold">{user.username}</h1>
+            <h1 className="text-xs font-semibold">{user?.username ?? "user"}</h1>
             <div className="text-gray-400 text-xs">bio</div>
           </div>
         </div>
