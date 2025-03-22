@@ -13,10 +13,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import axios from "axios";
-import { setPosts } from "../redux/postSlice";
+import { setPosts, setSelectedPost } from "../redux/postSlice";
 
 const Post = ({ post }) => {
-  const [postText, setPostText] = useState("");
+  const [text, setText] = useState("");
   const [open, setOpen] = useState(false); // Only for CommentDialog
   const [dialogOpen, setDialogOpen] = useState(false); // For controlling the dialog
   const { user } = useSelector((store) => store.auth);
@@ -24,17 +24,19 @@ const Post = ({ post }) => {
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(post?.likes?.includes(user?._id) || false);
   const [totalLikes, setTotalLikes] = useState(post?.likes.length);
+  const [comment, setComment] = useState(post?.comments);
 
   const postTextHandler = (e) => {
     const text = e.target.value;
-    setPostText(text.trim());
+    setText(text.trim());
   };
 
   const postComment = () => {
-    console.log(postText);
+    console.log(text);
     setPostText("");
   };
   const likeHandler = async () => {
+    if (!user) return toast.error(" Please Login");
     try {
       const action = liked ? "dislikes" : "likes";
       const res = await axios.get(
@@ -50,7 +52,7 @@ const Post = ({ post }) => {
             ? {
                 ...item,
                 likes: liked
-                  ? item.likes.filter((id) => id !== user._id)
+                  ? item.likes.filter((id) => id !== user?._id)
                   : [...item.likes, user._id],
               }
             : item
@@ -60,7 +62,35 @@ const Post = ({ post }) => {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
+    }
+  };
+  const commentHandler = async () => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/post/${post._id}/addcomment`,
+        { text },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        const updatedComments = [...comment, res.data.comment];
+        setComment(updatedComments);
+        const updatedPostData = posts.map((item) =>
+          item?._id === post?._id
+            ? { ...item, comments: updatedComments }
+            : item
+        );
+        dispatch(setPosts(updatedPostData));
+        toast.success(res.data.message);
+        setText("");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   const deletePost = async () => {
@@ -139,7 +169,13 @@ const Post = ({ post }) => {
               onClick={likeHandler}
             />
           )}
-          <MessageCircle size={25} onClick={() => setOpen(true)} />
+          <MessageCircle
+            size={25}
+            onClick={() => {
+              dispatch(setSelectedPost(post));
+              setOpen(true);
+            }}
+          />
           <Send size={25} />
         </div>
         <Bookmark size={25} />
@@ -150,19 +186,29 @@ const Post = ({ post }) => {
           <span className="font-semibold">{post?.author?.username} </span>
           {post?.caption}
         </p>
-        <span onClick={() => setOpen(true)}>View all 12 comments</span>
+        <span
+          onClick={() => {
+            dispatch(setSelectedPost(post));
+            setOpen(true);
+          }}
+        >
+          View all {comment?.length ?? 0} comments
+        </span>
         <CommentDialog open={open} setOpen={setOpen} />
         <div className="flex px-1 justify-between items-center">
           <input
             type="text"
-            value={postText}
+            value={text}
             onChange={postTextHandler}
             placeholder="Add a comment..."
             className="focus:outline-none w-full text-sm"
           />
-          {postText && (
-            <div onClick={postComment} className="text-blue-500">
-              post
+          {text && (
+            <div
+              onClick={commentHandler}
+              className="text-blue-400 cursor-pointer"
+            >
+              send
             </div>
           )}
         </div>

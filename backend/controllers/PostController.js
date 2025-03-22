@@ -156,11 +156,13 @@ export const addComment = async (req, res) => {
       text,
       author: whoCommentsId,
       post: postId,
-    }).populate({ path: "author", select: "username , profilepic" });
+    });
+    await comment.populate({ path: "author", select: "username , profilepic" });
     post.comments.push(comment._id);
     await post.save();
     return res.status(201).json({
       message: "Comment added",
+      comment,
       success: true,
     });
   } catch (error) {
