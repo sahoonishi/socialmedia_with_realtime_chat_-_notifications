@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import axios from "axios";
 import { setPosts, setSelectedPost } from "../redux/postSlice";
-
+import { formatDistanceToNow } from "date-fns";
 const Post = ({ post }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false); // Only for CommentDialog
@@ -25,12 +25,10 @@ const Post = ({ post }) => {
   const [liked, setLiked] = useState(post?.likes?.includes(user?._id) || false);
   const [totalLikes, setTotalLikes] = useState(post?.likes.length);
   const [comment, setComment] = useState(post?.comments);
-
   const postTextHandler = (e) => {
     const text = e.target.value;
-    setText(text.trim());
+    setText(text);
   };
-
   const postComment = () => {
     console.log(text);
     setPostText("");
@@ -114,7 +112,7 @@ const Post = ({ post }) => {
   return (
     <div className="border flex flex-col w-96 max-h-sm">
       <div className="flex justify-between items-center">
-        <div className="flex gap-1">
+        <div className="flex items-center gap-1">
           <Avatar>
             <AvatarImage
               src={post?.author?.profilepic}
@@ -123,8 +121,8 @@ const Post = ({ post }) => {
             />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <div>username</div>
-          <div>13h</div>
+          <div className="text-sm">{post?.author?.username}</div>
+          <div className="text-xs">Time</div>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
