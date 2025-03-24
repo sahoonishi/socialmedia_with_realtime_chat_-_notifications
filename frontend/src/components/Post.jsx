@@ -110,7 +110,7 @@ const Post = ({ post }) => {
   };
 
   return (
-    <div className="border flex flex-col w-96 max-h-sm">
+    <div className="border flex flex-col w-[90vw] md:w-72 lg:w-96 max-h-sm">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">
           <Avatar>

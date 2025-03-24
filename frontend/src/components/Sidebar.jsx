@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser } from "../redux/authSlice";
 import CreatePost from "./CreatePost";
+import { setPosts, setSelectedPost } from "../redux/postSlice";
+import ThemeToggle from "./dark";
 
 const Sidebar = () => {
   const [open,setOpen]=useState(false);
@@ -34,6 +36,8 @@ const Sidebar = () => {
       );
       if (res.data.success) {
         dispatch(setAuthUser(null));
+        dispatch(setSelectedPost(null));
+        dispatch(setPosts([]));
         navigate("/login");
         toast.success(res.data.message);
       }
@@ -70,13 +74,13 @@ const Sidebar = () => {
     { icons: <LogOut />, text: "Logout" },
   ];
   return (
-    <div className=" py-4 border-r border-gray-800 px-2 flex flex-col justify-around w-[25%]">
+    <div className="hidden py-4 border-r border-gray-800 px-2 md:flex flex-col justify-around w-[25%]">
       {items.map((item, _) => {
         return (
           <div
             key={item.text}
             onClick={() => sidebarHandler(item.text)}
-            className="relative rounded-lg p-3 cursor-pointer hover:bg-gray-100 flex gap-2 items-center"
+            className="relative rounded-lg p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 flex gap-2 items-center"
           >
             <div>{item.icons}</div>
             <div>{item.text}</div>
@@ -84,6 +88,10 @@ const Sidebar = () => {
         );
       })}
       <CreatePost open={open} setOpen={setOpen} />
+      <div className="flex justify-start px-4">
+      <ThemeToggle/>
+      </div>
+      
     </div>
   );
 };

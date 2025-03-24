@@ -40,7 +40,7 @@ const CommentDialog = ({ open, setOpen }) => {
                 {selectedPost?.author?.username}.
               </div>
             </div>
-            <div className="my-1 overflow-y-scroll space-y-4 h-full" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            <div className="my-1 overflow-y-auto space-y-4 max-h-96" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
               {selectedPost?.comments?.map((comment) => {
                 return (
                   <div
