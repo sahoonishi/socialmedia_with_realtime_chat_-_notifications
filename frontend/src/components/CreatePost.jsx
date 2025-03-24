@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../redux/postSlice";
+import { setAuthUser } from "../redux/authSlice";
 const CreatePost = ({ open, setOpen }) => {
   const [file, setFile] = useState("");
   const [caption, setCaption] = useState("");
@@ -41,7 +42,7 @@ const CreatePost = ({ open, setOpen }) => {
         if(res.data.successs){
           toast.success(res.data.message);
           dispatch(setPosts([...posts, res.data.post].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))));
-
+          dispatch(setAuthUser({...user,posts:[...user.posts , res.data.post]}));
           setOpen(false);
         }
     } catch (error) {

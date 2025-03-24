@@ -20,7 +20,7 @@ export default function ThemeToggle() {
       onClick={() => setDarkMode(!darkMode)}
       className=" p-1 md:px-4 md:py-2 md:dark:bg-gray-800 md:bg-gray-200  cursor-pointer transition-all duration-300 rounded-md"
     >
-      {darkMode ? "☀️" : "🌙"}
+      {darkMode ? "Light" : "Dark"}
     </button>
   );
 }

@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { setPosts, setSelectedPost } from "../redux/postSlice";
 import { formatDistanceToNow } from "date-fns";
+import { setAuthUser } from "../redux/authSlice";
 const Post = ({ post }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false); // Only for CommentDialog
@@ -101,6 +102,7 @@ const Post = ({ post }) => {
         toast.success(res.data.message);
         const updatedPosts = posts.filter((item) => item?._id !== post?._id);
         dispatch(setPosts(updatedPosts));
+        dispatch(setAuthUser({...user,posts:[...user.posts].filter((item)=>item._id !== post._id)}))
         setDialogOpen(false); // Close the dialog
       }
     } catch (error) {
