@@ -52,6 +52,10 @@ const Sidebar = () => {
       logoutHandler();
     }else if(textType === "Create"){
       setOpen(true);
+    }else if(textType === "Profile"){
+      navigate(`/profile/${user?.username}`);
+    }else if(textType === "Home"){
+      navigate(`/`);
     }
   };
   const items = [

@@ -8,7 +8,7 @@ const RightSidebar = () => {
   console.log(suggested);
   return (
     <div className="hidden md:block border border-black py-8 w-full max-w-[300px]">
-      <Link to={`/profile/${user.username}`} className="border border-black flex gap-2 items-center">
+      <Link to={`/profile/${user?.username}`} className="border border-black flex gap-2 items-center">
         <Avatar>
           <AvatarImage
             src={user?.profilepic}

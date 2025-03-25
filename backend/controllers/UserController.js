@@ -158,9 +158,7 @@ export const updateProfile = async (req, res) => {
 // GET SUGGESTED USERS
 export const getSuggestedUsers = async (req, res) => {
   try {
-    const getSuggestedusers = await User.find({ _id: { $ne: req.id } }).select(
-      "-password"
-    );
+    const getSuggestedusers = await User.find({ _id: { $ne: req.id } }).populate({path:'posts',select: "image likes comments",createdAt:-1});
     if (!getSuggestedusers) {
       return res.status(400).json({
         message: "No sugested users found",
