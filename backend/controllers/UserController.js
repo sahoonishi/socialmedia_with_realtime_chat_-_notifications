@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 // import { logout } from "./UserController";
 import getDataUri from "./../utils/dataURI.js";
 import { Post } from "../models/Post.model.js";
+import cloudinary from "../utils/cloudinary.js";
 // REGISTER
 export const register = async (req, res) => {
   try {
@@ -78,6 +79,7 @@ export const login = async (req, res) => {
       _id: user._id,
       username: user.username,
       email: user.email,
+      gender: user.gender,
       profilepic: user.profilepic,
       bio: user.bio,
       follower: user.follower,
@@ -144,7 +146,7 @@ export const updateProfile = async (req, res) => {
     }
     if (bio) user.bio = bio;
     if (gender) user.gender = gender;
-    if (bio) user.profilepic = cloudResponse?.secure_url;
+    if (profilepic) user.profilepic = cloudResponse?.secure_url;
     await user.save();
     return res.status(200).json({
       message: "profle updated",

@@ -1,10 +1,11 @@
 import { setSuggested } from "../redux/authSlice";
 import axios from "axios";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const useSuggested = () => {
   const dispatch = useDispatch();
+  const {posts} = useSelector(store=>store.post);
   useEffect(() => {
     const fetchSuggestedUsers = async () => {
       
@@ -25,6 +26,6 @@ const useSuggested = () => {
       }
     };
     fetchSuggestedUsers();
-  }, []);
+  }, [posts]);
 };
 export default useSuggested;

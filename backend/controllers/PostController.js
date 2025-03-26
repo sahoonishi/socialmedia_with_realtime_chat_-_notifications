@@ -132,7 +132,7 @@ export const disLikePost = async (req, res) => {
       return res
         .status(404)
         .json({ message: "Post not found", success: false });
-    await post.updateOne({ $addToSet: { likes: whoDisLikes_id } });
+    await post.updateOne({ $pull: { likes: whoDisLikes_id } });
     await post.save();
 
     // IMPLEMENT REALTIME NOTIFICATION WITH SOCKET.IO  ..........................

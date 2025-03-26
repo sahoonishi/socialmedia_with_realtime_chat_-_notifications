@@ -20,7 +20,7 @@ const RightSidebar = () => {
         <div className="text-sm font-normal">
           <div className="font-medium">{user?.username}</div>
           <div className="text-xs">
-            {user?.bio.length == 0 ? "Bio here...." : user?.bio}
+            {user?.bio?.length == 0 ? "Bio here...." : user?.bio}
           </div>
         </div>
       </Link>

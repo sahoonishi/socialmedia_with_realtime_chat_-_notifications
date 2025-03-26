@@ -16,6 +16,7 @@ import axios from "axios";
 import { setPosts, setSelectedPost } from "../redux/postSlice";
 import { formatDistanceToNow } from "date-fns";
 import { setAuthUser } from "../redux/authSlice";
+import { fetchUserData } from "../lib/fetchUserData";
 const Post = ({ post }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false); // Only for CommentDialog
@@ -46,17 +47,34 @@ const Post = ({ post }) => {
         const updatedLikes = liked ? totalLikes - 1 : totalLikes + 1;
         setTotalLikes(updatedLikes);
         setLiked(!liked);
-        const updatedPostData = posts.map((item) =>
+        const updatedPostData = posts?.map((item) =>
           item._id === post._id
             ? {
                 ...item,
                 likes: liked
-                  ? item.likes.filter((id) => id !== user?._id)
-                  : [...item.likes, user._id],
+                  ? item?.likes?.filter((id) => id !== user?._id)
+                  : [...item?.likes, user._id],
               }
             : item
         );
         dispatch(setPosts(updatedPostData));
+        const updatedUser = user?.posts?.map((item) =>
+          item._id === post._id
+            ? {
+                ...item,
+                likes: liked
+                  ? item.likes.filter((id) => id !== user._id)
+                  : [...item.likes, user._id],
+              }
+            : item
+        );
+        dispatch(
+          setAuthUser({
+            ...user, // Keep other user properties
+            posts: updatedUser, // Update only posts
+          })
+        );
+        // dispatch( setAuthUser(await fetchUserData(user._id)));
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -85,6 +103,21 @@ const Post = ({ post }) => {
             : item
         );
         dispatch(setPosts(updatedPostData));
+        const updatedUser = user?.posts?.map((item) =>
+          item._id === post._id
+            ? {
+                ...item,
+                comments: [...item.comments, user._id],
+              }
+            : item
+        );
+        dispatch(
+          setAuthUser({
+            ...user, // Keep other user properties
+            posts: updatedUser, // Update only posts
+          })
+        );
+        // dispatch(setAuthUser(await fetchUserData(user._id)));
         toast.success(res.data.message);
         setText("");
       }
@@ -102,7 +135,12 @@ const Post = ({ post }) => {
         toast.success(res.data.message);
         const updatedPosts = posts.filter((item) => item?._id !== post?._id);
         dispatch(setPosts(updatedPosts));
-        dispatch(setAuthUser({...user,posts:[...user.posts].filter((item)=>item._id !== post._id)}))
+        dispatch(
+          setAuthUser({
+            ...user,
+            posts: [...user.posts].filter((item) => item._id !== post._id),
+          })
+        );
         setDialogOpen(false); // Close the dialog
       }
     } catch (error) {
