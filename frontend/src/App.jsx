@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Signup from './components/Signup'
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Login from './components/Login';
@@ -7,8 +7,21 @@ import Profile from './components/Profile';
 import Post from './components/Post';
 import Editprofile from './components/Editprofile';
 import Chat from './components/Chat';
+import {io} from "socket.io-client";
+import { useSelector } from 'react-redux';
 
 const App = () => {
+  const {user} = useSelector(store=>store.auth);
+  useEffect(()=>{
+    if(user){
+      const socketio = io('http://localhost:8080',{
+        query:{
+          userId:user._id
+        },
+        transports:['websocket']
+      })
+    }
+  },[]);
   return (
     <BrowserRouter>
       <Routes>
