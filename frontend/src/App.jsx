@@ -8,10 +8,12 @@ import Post from './components/Post';
 import Editprofile from './components/Editprofile';
 import Chat from './components/Chat';
 import {io} from "socket.io-client";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSocket } from './redux/socketSlice';
 
 const App = () => {
   const {user} = useSelector(store=>store.auth);
+  const dispatch = useDispatch();
   useEffect(()=>{
     if(user){
       const socketio = io('http://localhost:8080',{
@@ -19,6 +21,11 @@ const App = () => {
           userId:user._id
         },
         transports:['websocket']
+      })
+      dispatch(setSocket(socketio));
+      // ! Listen all events
+      socketio.on('getOnlineUsers',(onlineUsers)=>{
+        
       })
     }
   },[]);
