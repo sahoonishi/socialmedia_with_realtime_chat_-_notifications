@@ -14,6 +14,7 @@ import authSlice from "./authSlice.js";
 import postSlice from "./postSlice.js";
 // import socketSlice from "./socketSlice.js";
 import chatSlice from "./chatSlice.js";
+import notificationSlice from "./notificationSlice.js"
 
 const persistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   post:postSlice,
   // socket:socketSlice,
   chat:chatSlice,
+  notification:notificationSlice,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const store = configureStore({

@@ -19,11 +19,11 @@ import { setPosts, setSelectedPost } from "../redux/postSlice";
 import ThemeToggle from "./dark";
 
 const Sidebar = () => {
-  const [open,setOpen]=useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
-  
+  const { likenotification } = useSelector((store) => store.notification);
 
   //LOGOUT FUNCTION
   const logoutHandler = async () => {
@@ -50,14 +50,13 @@ const Sidebar = () => {
   const sidebarHandler = (textType) => {
     if (textType === "Logout") {
       logoutHandler();
-    }else if(textType === "Create"){
+    } else if (textType === "Create") {
       setOpen(true);
-    }else if(textType === "Profile"){
+    } else if (textType === "Profile") {
       navigate(`/profile/${user?.username}`);
-    }else if(textType === "Home"){
+    } else if (textType === "Home") {
       navigate(`/`);
-    }
-    else if(textType === "Messages"){
+    } else if (textType === "Messages") {
       navigate(`/chat`);
     }
   };
@@ -91,14 +90,18 @@ const Sidebar = () => {
           >
             <div>{item.icons}</div>
             <div>{item.text}</div>
+            {
+              item.text === "Notifications" && likenotification?.length > 0 && (
+                <div></div>
+              )
+            }
           </div>
         );
       })}
       <CreatePost open={open} setOpen={setOpen} />
       <div className="flex justify-start px-4">
-      <ThemeToggle/>
+        <ThemeToggle />
       </div>
-      
     </div>
   );
 };
