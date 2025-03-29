@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -6,10 +6,42 @@ import { setSelectedUser } from "../redux/authSlice";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Messages from "./Messages";
+import axios from "axios";
+import { setMessages } from "../redux/chatSlice";
 const Chat = () => {
+  const [message,setMsg] = useState("");
   const { user, selectedUser, suggested } = useSelector((store) => store.auth);
-  const status = true;
+  const {onlineUsers,messages} = useSelector(store=>store.chat);
   const dispatch = useDispatch();
+
+  const messageHandler=async(recieverId)=>{
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/message/send/${recieverId}`,{message},{
+        headers:{
+          'Content-Type':'application/json'
+        },
+        withCredentials:true
+      });
+      if(res.data.success){
+          dispatch(setMessages([...messages,res.data.newMessage]));
+          setMsg("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Prevent default to avoid newline
+      messageHandler(selectedUser._id);
+    }
+  };
+
+  useEffect(()=>{
+    return ()=>{
+      dispatch(setSelectedUser(null));
+    }
+  },[]);
 
   return (
     <Layout>
@@ -20,6 +52,7 @@ const Chat = () => {
           </h1>
           <div className="border mt-2 border-white">
             {suggested?.map((user) => {
+              const isOnline = onlineUsers?.includes(user._id);
               return (
                 <div
                   onClick={() => dispatch(setSelectedUser(user))}
@@ -36,7 +69,7 @@ const Chat = () => {
                   </Avatar>
                   <div>
                     <div>{user.username}</div>
-                    {status ? (
+                    {isOnline ? (
                       <div className="text-green-500 text-xs font-semibold">
                         online
                       </div>
@@ -67,8 +100,8 @@ const Chat = () => {
               </div>
               <Messages selectedUser={selectedUser}/>
               <div className="flex sticky bottom-0 items-center p-2">
-                <Input type="text" placeholder="Type Message..." className="focus-visible:ring-transparent flex-1 mr-1" />
-                <Button>Send</Button>
+                <Input value={message} onKeyDown={handleKeyPress} onChange={(e)=>setMsg(e.target.value)} type="text" placeholder="Type Message..." className="focus-visible:ring-transparent flex-1 mr-1" />
+                <Button onClick={()=>messageHandler(selectedUser._id)} >Send</Button>
               </div>
             </div>
           ) : (

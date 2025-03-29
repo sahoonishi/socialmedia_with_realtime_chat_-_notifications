@@ -15,7 +15,7 @@ import { upload } from "../middlewares/multer.js";
 const router = express.Router();
 
 router.post("/addpost", isAuth, upload.single("image"), addNewPost);
-router.get("/getallposts", isAuth, getAllPost);
+router.get("/getallposts", getAllPost);
 router.get("/getyourposts", isAuth, getYourPosts);
 router.get("/:id/likes", isAuth, likePost);
 router.get("/:id/dislikes", isAuth, disLikePost);

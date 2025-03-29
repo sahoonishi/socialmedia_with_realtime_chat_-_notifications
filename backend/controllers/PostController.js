@@ -3,6 +3,7 @@ import sharp from "sharp";
 import cloudinary from "./../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 import { Comment } from "../models/comment.model.js";
+import { getRecieverSocketID, io } from "../socket/socket.js";
 // ADD NEW POST
 export const addNewPost = async (req, res) => {
   try {
@@ -51,7 +52,6 @@ export const addNewPost = async (req, res) => {
       success: false,
     });
   }
-  
 };
 // GET ALL POST
 export const getAllPost = async (req, res) => {
@@ -116,7 +116,20 @@ export const likePost = async (req, res) => {
     await post.updateOne({ $addToSet: { likes: whoLikes_id } });
     await post.save();
 
-    // IMPLEMENT REALTIME NOTIFICATION WITH SOCKET.IO  ..........................
+    // IMPLEMENT REALTIME NOTIFICATION WITH SOCKET.IO
+    const user = await User.findById(whoLikes_id).select("username profilepic");
+    const postOwnerId = post.author.toString();
+    if (postOwnerId !== whoLikes_id) {
+      const notification = {
+        type: "like",
+        userId: whoLikes_id,
+        userdetails: user,
+        postId,
+        message: `${user.username} liked your post`,
+      };
+      const postOwnerSocketId = getRecieverSocketID(postOwnerId);
+      io.to(postOwnerSocketId).emit("notification", notification);
+    }
     return res.status(200).json({ message: "Post Liked", success: true });
   } catch (error) {
     console.log(error);
@@ -135,7 +148,20 @@ export const disLikePost = async (req, res) => {
     await post.updateOne({ $pull: { likes: whoDisLikes_id } });
     await post.save();
 
-    // IMPLEMENT REALTIME NOTIFICATION WITH SOCKET.IO  ..........................
+    // IMPLEMENT REALTIME NOTIFICATION WITH SOCKET.IO
+    const user = await User.findById(whoDisLikes_id).select("username profilepic");
+    const postOwnerId = post.author.toString();
+    if (postOwnerId !== whoDisLikes_id) {
+      const notification = {
+        type: "dislike",
+        userId: whoDisLikes_id,
+        userdetails: user,
+        postId,
+        message: `${user.username} disliked your post`,
+      };
+      const postOwnerSocketId = getRecieverSocketID(postOwnerId);
+      io.to(postOwnerSocketId).emit("notification", notification);
+    }
     return res.status(200).json({ message: "Post Disliked", success: true });
   } catch (error) {
     console.log(error);
@@ -229,13 +255,11 @@ export const bookmarkPost = async (req, res) => {
       // remove logic
       await user.updateOne({ $pull: { bookmarks: post._id } });
       await user.save();
-      return res
-        .status(200)
-        .json({
-          type: "unsaved",
-          message: "Post removed from bookmark",
-          success: true,
-        });
+      return res.status(200).json({
+        type: "unsaved",
+        message: "Post removed from bookmark",
+        success: true,
+      });
     } else {
       // Add logic
       await user.updateOne({ $addToSet: { bookmarks: post._id } });

@@ -23,6 +23,6 @@ router.post(
   upload.single("profilepic"),
   updateProfile
 );
-router.get("/suggested", isAuth, getSuggestedUsers);
+router.get("/suggested", getSuggestedUsers);
 router.post("/connection/:id", isAuth, followUnfollow);
 export default router;

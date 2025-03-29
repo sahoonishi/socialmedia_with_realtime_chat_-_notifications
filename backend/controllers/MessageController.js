@@ -1,5 +1,6 @@
 import { Chatwindow } from "../models/conversation.model.js";
 import { Message } from "../models/message.model.js";
+import { getRecieverSocketID, io } from "../socket/socket.js";
 // SEND MESSAGE
 export const sendMessage=async(req,res)=>{
   try {
@@ -23,6 +24,10 @@ export const sendMessage=async(req,res)=>{
     await Promise.all([conversation.save(),newMessage.save()]);
 
     // implement socketio for realtime data transfer
+    const recieverSocketID = getRecieverSocketID(reciever);
+    if(recieverSocketID){
+      io.to(recieverSocketID).emit('newMessage',newMessage);
+    }
 
     return res.status(201).json({success:true,newMessage})
   } catch (error) {
@@ -34,9 +39,9 @@ export const getMessage=async(req,res)=>{
   try {
     const sender = req.id;
     const reciever = req.params.id;
-    const conversation = await Chatwindow.find({
+    const conversation = await Chatwindow.findOne({
       members:{$all:[sender,reciever]}
-    });
+    }).populate('message');
     if(!conversation) return res.status(200).json({
       success:true,
       messages:[]
