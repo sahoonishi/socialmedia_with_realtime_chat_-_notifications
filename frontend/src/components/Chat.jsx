@@ -45,7 +45,7 @@ const Chat = () => {
 
   return (
     <Layout>
-      <section className="border border-white h-full w-full flex">
+      <section className="border border-white h-screen lg:h-full w-full flex">
         <div className="w-1/4 relative border border-white h-full overflow-y-auto">
           <h1 className="border top-0 bg-white z-50 dark:bg-black  sticky border-white text-xl font-bold underline p-2">
             {user.username}
@@ -86,7 +86,7 @@ const Chat = () => {
         </div>
         <div className="w-3/4 overflow-y-auto h-full border border-white">
           {selectedUser ? (
-            <div className="relative flex flex-col h-full">
+            <div className="relative flex flex-col h-full overflow-hidden">
               <div className=" sticky top-0 bg-white dark:bg-gray-800 px-1 py-2 flex gap-1 items-center">
                 <Avatar className="size-10">
                   <AvatarImage

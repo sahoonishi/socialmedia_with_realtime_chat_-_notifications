@@ -17,6 +17,8 @@ import { setAuthUser } from "../redux/authSlice";
 import CreatePost from "./CreatePost";
 import { setPosts, setSelectedPost } from "../redux/postSlice";
 import ThemeToggle from "./dark";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "./ui/button";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -90,11 +92,49 @@ const Sidebar = () => {
           >
             <div>{item.icons}</div>
             <div>{item.text}</div>
-            {
-              item.text === "Notifications" && likenotification?.length > 0 && (
-                <div></div>
-              )
-            }
+            {item.text === "Notifications" && likenotification?.length > 0 && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    size="icon"
+                    className="size-5 bg-red-600 hover:bg-red-600 rounded-full absolute bottom-6  left-7"
+                  >
+                    {likenotification?.length}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div className="flex flex-col gap-1 justify-center px-4 py-2 overflow-y-auto max-h-16">
+                    {likenotification?.length === 0 ? (
+                      <p>No new Notification</p>
+                    ) : (
+                      likenotification?.map((notif) => {
+                        return (
+                          <div
+                            key={notif.userId}
+                            className="flex items-center gap-3"
+                          >
+                            <Avatar className="size-10">
+                              <AvatarImage
+                                src={notif?.userdetails?.profilepic}
+                                alt="Profile_Image"
+                                className="object-cover"
+                              />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <p className="text-md">
+                              <span className="font-semibold mr-1">
+                                {notif?.userdetails.username}
+                              </span>
+                              liked your post
+                            </p>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
           </div>
         );
       })}

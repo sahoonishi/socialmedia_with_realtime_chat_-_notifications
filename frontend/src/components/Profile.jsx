@@ -39,7 +39,6 @@ const Profile = () => {
     };
     fetchAllPosts();
   },[]);
-  console.log(allPosts)
   let otherUser;
   if (name === user?.username) {
     otherUser = [user];

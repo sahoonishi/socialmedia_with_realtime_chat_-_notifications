@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-
+import { MdOutlineDarkMode } from "react-icons/md";
+import { MdOutlineLightMode } from "react-icons/md";
 export default function ThemeToggle() {
   const [darkMode, setDarkMode] = useState(
     typeof window !== "undefined" && localStorage.getItem("theme") === "dark"
@@ -20,7 +21,7 @@ export default function ThemeToggle() {
       onClick={() => setDarkMode(!darkMode)}
       className=" p-1 md:px-4 md:py-2 md:dark:bg-gray-800 md:bg-gray-200  cursor-pointer transition-all duration-300 rounded-md"
     >
-      {darkMode ? "Light" : "Dark"}
+      {darkMode ? <MdOutlineLightMode className="size-5"/> : <MdOutlineDarkMode className="size-5"/>}
     </button>
   );
 }
