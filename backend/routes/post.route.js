@@ -22,6 +22,6 @@ router.get("/:id/dislikes", isAuth, disLikePost);
 router.post("/:id/addcomment", isAuth, addComment);
 router.get("/:id/allcomments", isAuth, getCommentsOfPost);
 router.delete("/delete/:id", isAuth, deletePost);
-router.post("/:id/bookmark", isAuth, bookmarkPost);
+router.get("/:id/bookmark", isAuth, bookmarkPost);
 
 export default router;

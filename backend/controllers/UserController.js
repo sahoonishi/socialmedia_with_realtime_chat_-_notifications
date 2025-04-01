@@ -33,7 +33,7 @@ export const register = async (req, res) => {
     return res.status(201).json({
       message: "Account created succcessfully",
       success: true,
-      user:userResponse,
+      user: userResponse,
     });
   } catch (error) {
     console.log(error);
@@ -116,7 +116,10 @@ export const logout = async (_, res) => {
 export const getProfile = async (req, res) => {
   try {
     const userid = req.params.id;
-    let user = await User.findById(userid).select("-password");
+    let user = await User.findById(userid)
+      .select("-password")
+      .populate({ path: "posts", options:{sort:{createdAt:-1}} })
+      .populate("bookmarks");
     return res.status(200).json({
       message: "Profile found",
       user,
@@ -160,7 +163,13 @@ export const updateProfile = async (req, res) => {
 // GET SUGGESTED USERS
 export const getSuggestedUsers = async (req, res) => {
   try {
-    const getSuggestedusers = await User.find({ _id: { $ne: req.id } }).populate({path:'posts',select: "image likes comments",createdAt:-1});
+    const getSuggestedusers = await User.find({
+      _id: { $ne: req.id },
+    }).populate({
+      path: "posts",
+      select: "image likes comments",
+      createdAt: -1,
+    });
     if (!getSuggestedusers) {
       return res.status(400).json({
         message: "No sugested users found",

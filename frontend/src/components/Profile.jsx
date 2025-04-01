@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { FaRegHeart } from "react-icons/fa6";
 import { MessageCircle } from "lucide-react";
 import axios from "axios";
+import useGetUserProfile from "../hooks/useGetUserProfile";
 
 const Profile = () => {
   const { name } = useParams();
@@ -18,7 +19,9 @@ const Profile = () => {
   // console.log(show);
   // console.log(name);
   const { user } = useSelector((store) => store.auth);
+  useGetUserProfile(user?._id);
   const { suggested } = useSelector((store) => store.auth);
+  const { userprofile } = useSelector((store) => store.auth);
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
@@ -76,12 +79,9 @@ const Profile = () => {
                   >
                     Edit profile
                   </Link>
-                )
-                :
-                (
+                ) : (
                   <Button variant="secondary">Follow</Button>
-                )
-                }
+                )}
 
                 <div className="uppercase">{otherUser?.username}</div>
               </div>
@@ -201,16 +201,41 @@ const Profile = () => {
                       })}
                 </div>
               ) : (
-                <div>
-                  {otherUser[0]?.bookmarks &&
-                  otherUser[0]?.bookmarks.length > 0 ? (
-                    <div></div>
+                <>
+                  {userprofile?.bookmarks &&
+                  userprofile?.bookmarks.length > 0 ? (
+                    <div className="my-2 grid grid-cols-2 md:grid-cols-3 overflow-y-auto gap-2">
+                      {userprofile?.bookmarks?.map((post) => {
+                        return (
+                          <div
+                            key={post._id}
+                            className="border relative rounded-lg"
+                          >
+                            <img
+                              src={post?.image}
+                              alt="post"
+                              className="object-cover h-full rounded-lg"
+                            />
+                            <div className="absolute flex gap-4 justify-center items-center bg-black/90 opacity-0 hover:opacity-75 transition-all duration-200 inset-0 rounded-lg text-white">
+                              <div className="flex">
+                                <FaRegHeart size="20" className="mr-1" />
+                                {post?.likes?.length ?? 0}
+                              </div>
+                              <div className="flex gap-1">
+                                <MessageCircle size="20" className="mr-1" />{" "}
+                                {post?.comments?.length ?? 0}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   ) : (
-                    <div className="py-6 flex items-center justify-center">
+                    <div className="md:py-16 py-6 flex items-center justify-center">
                       No saved posts
                     </div>
                   )}
-                </div>
+                </>
               )}
             </div>
           </div>
