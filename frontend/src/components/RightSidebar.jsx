@@ -4,28 +4,29 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "react-router-dom";
 const RightSidebar = () => {
   const { user, suggested } = useSelector((store) => store.auth);
-  console.log(user);
-  console.log(suggested);
+  // console.log(user);
+  // console.log(suggested);
   return (
-    <div className="hidden md:block border border-black py-8 w-full max-w-[300px]">
-      <Link to={`/profile/${user?.username}`} className="border border-black flex gap-2 items-center">
+    <div className="hidden md:block border-l border-gray-600 px-4 py-8 w-full max-w-[300px]">
+      <Link to={`/profile/${user?.username}`} className=" flex gap-2 items-center">
         <Avatar>
           <AvatarImage
             src={user?.profilepic}
             alt="Profile_Image"
-            className="object-cover"
+            className="object-cover "
+            
           />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="text-sm font-normal">
           <div className="font-medium">{user?.username}</div>
-          <div className="text-xs">
+          <div className="text-xs max-w-52">
             {user?.bio?.length == 0 ? "Bio here...." : user?.bio}
           </div>
         </div>
       </Link>
       {/* SuggestedUser */}
-      <div className="border py-6">
+      <div className=" py-6">
         <div className="text-sm flex items-center justify-between pr-6">
           <div className=" text-gray-800 dark:text-gray-200">
             Suggested Users

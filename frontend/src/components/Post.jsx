@@ -17,6 +17,7 @@ import { setPosts, setSelectedPost } from "../redux/postSlice";
 import { formatDistanceToNow } from "date-fns";
 import { setAuthUser } from "../redux/authSlice";
 import { fetchUserData } from "../lib/fetchUserData";
+import { Link } from "react-router-dom";
 const Post = ({ post }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false); // Only for CommentDialog
@@ -32,7 +33,6 @@ const Post = ({ post }) => {
     setText(text);
   };
   const postComment = () => {
-    console.log(text);
     setPostText("");
   };
   const likeHandler = async () => {
@@ -150,9 +150,9 @@ const Post = ({ post }) => {
   };
 
   return (
-    <div className="border flex flex-col w-[90vw] md:w-72 lg:w-96 max-h-sm">
+    <div className=" flex flex-col w-[90vw] md:w-72 lg:w-96 max-h-sm">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-1">
+        <Link to={`/profile/${post?.author?.username}`} className="flex items-center gap-1">
           <Avatar>
             <AvatarImage
               src={post?.author?.profilepic}
@@ -163,7 +163,7 @@ const Post = ({ post }) => {
           </Avatar>
           <div className="text-sm">{post?.author?.username}</div>
           <div className="text-xs">Time</div>
-        </div>
+        </Link>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <BsThreeDotsVertical className="cursor-pointer" />
@@ -186,7 +186,7 @@ const Post = ({ post }) => {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="border rounded-lg h-[400px] max-h-[500px] w-full">
+      <div className=" rounded-lg h-[400px] max-h-[500px] w-full">
         <img
           src={post?.image}
           className="w-full h-full object-cover rounded-lg"
@@ -219,7 +219,7 @@ const Post = ({ post }) => {
         <Bookmark size={25} />
       </div>
       <div>
-        <span className="block font-semibold border">{totalLikes} likes</span>
+        <span className="block font-semibold ">{totalLikes} likes</span>
         <p>
           <span className="font-semibold">{post?.author?.username} </span>
           {post?.caption}

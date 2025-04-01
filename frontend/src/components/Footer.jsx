@@ -180,13 +180,13 @@ const Sidebar = () => {
     { icons: <LogOut />, text: "Logout" },
   ];
   return (
-    <div className="md:hidden sticky bottom-0 flex justify-around bg-white dark:bg-gray-800">
+    <div className="md:hidden sticky w-full bottom-0 flex justify-around bg-white dark:bg-gray-900">
       {items.map((item, _) => {
         return (
           <div
             key={item.text}
             onClick={() => sidebarHandler(item.text)}
-            className="relative rounded-lg px-3 py-4 lg:p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 flex gap-2 items-center"
+            className="relative rounded-lg px-2 py-4 lg:p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 flex gap-2 items-center"
           >
             <div>{item.icons}</div>
             {/* <div>{item.text}</div> */}
@@ -237,7 +237,7 @@ const Sidebar = () => {
         );
       })}
       <CreatePost open={open} setOpen={setOpen} />
-      <div className="flex justify-start px-4">
+      <div className="flex justify-start px-2">
         <ThemeToggle />
       </div>
     </div>

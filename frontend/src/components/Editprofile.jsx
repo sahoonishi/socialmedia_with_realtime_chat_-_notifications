@@ -71,10 +71,10 @@ const Editprofile = () => {
   };
   return (
     <Layout>
-      <div className="h-screen overflow-y-auto flex flex-col gap-10 mx-auto max-w-7xl px-6 py-16">
-        <h1 className="font-bold text-2xl">Edit Profile</h1>
-        <div className="flex justify-between items-center bg-gray-200 dark:bg-gray-800  px-6 py-4 rounded-lg">
-          <div className="flex gap-4 items-center">
+      <div className=" h-[calc(100vh-4rem)] md:h-screen overflow-y-auto flex flex-col gap-6 md:gap-10 mx-auto max-w-7xl md:px-6 md:py-16 px-3 py-8">
+        <h1 className="font-bold text-xl lg:text-2xl">Edit Profile</h1>
+        <div className="flex justify-between items-center bg-gray-200 dark:bg-gray-800  md:px-6 md:py-4 px-3 py-2 md:rounded-lg rounded-xl">
+          <div className="flex gap-2 md:gap-4 items-center">
             <Avatar className="size-15">
               <AvatarImage
                 src={user?.profilepic}
@@ -83,7 +83,7 @@ const Editprofile = () => {
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <h1 className="font-bold text-lg">{user?.username}</h1>
+            <h1 className="font-bold text-md md:text-lg">{user?.username}</h1>
           </div>
           <input
             ref={imageRef}
@@ -93,24 +93,24 @@ const Editprofile = () => {
           />
           <Button
             onClick={() => imageRef?.current.click()}
-            className="cursor-pointer px-3 rounded-lg "
+            className="cursor-pointer px-2 md:px-3 rounded-xl text-sm md:text-lg "
           >
             Change Photo
           </Button>
         </div>
         <div>
-          <h1 className="text-xl font-bold mb-4">Bio</h1>
+          <h1 className="text-lg md:text-xl font-bold mb-2 md:mb-4">Bio</h1>
           <Textarea
             value={input.bio}
             onChange={(e) => setInput({ ...input, bio: e.target.value })}
             name="bio"
-            className="border"
+            className="border text-md md:text-lg"
             id=""
             placeholder="Change Bio"
           />
         </div>
         <div className="w-fit ">
-          <h1 className="text-xl font-bold mb-4">Gender</h1>
+          <h1 className="text-lg md:text-xl font-bold mb-2 md:mb-4">Gender</h1>
           <Select
             defaultValue={input.gender}
             onValueChange={selectChangeHandler}

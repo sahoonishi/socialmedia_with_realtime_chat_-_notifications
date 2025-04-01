@@ -19,6 +19,7 @@ import { setPosts, setSelectedPost } from "../redux/postSlice";
 import ThemeToggle from "./dark";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
+import Logo from "./Logo";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -60,10 +61,12 @@ const Sidebar = () => {
       navigate(`/`);
     } else if (textType === "Messages") {
       navigate(`/chat`);
+    }else if (textType === "") {
+      navigate(`/`);
     }
   };
   const items = [
-    // { icons: <Logo/>, text: "" },
+    { icons: <Logo/>, text: "" },
     { icons: <Home />, text: "Home" },
     { icons: <Search />, text: "Search" },
     { icons: <TrendingUp />, text: "Explore" },
@@ -82,7 +85,7 @@ const Sidebar = () => {
     { icons: <LogOut />, text: "Logout" },
   ];
   return (
-    <div className="hidden py-4 border-r border-gray-800 px-2 md:flex flex-col justify-around w-[25%]">
+    <div className="hidden py-4 border-r border-gray-800 dark:border-gray-600 px-2 md:flex flex-col justify-around w-[25%]">
       {items.map((item, _) => {
         return (
           <div

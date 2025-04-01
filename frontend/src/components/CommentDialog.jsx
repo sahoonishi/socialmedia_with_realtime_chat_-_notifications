@@ -13,17 +13,17 @@ const CommentDialog = ({ open, setOpen }) => {
     <Dialog open={open}>
       <DialogContent
         onInteractOutside={() => setOpen(false)}
-        className="flex max-w-3xl p-0"
+        className="flex max-w-3xl px-3 lg:p-0"
       >
         <div className="flex gap-2 flex-1">
-          <div className=" rounded-lg h-[300px] w-1/2 ">
+          <div className="hidden md:block rounded-lg h-[300px] w-1/2 ">
             <img
               src={selectedPost?.image}
               alt="postimage"
               className="w-full h-full object-cover rounded-l-md"
             />
           </div>
-          <div className="w-1/2 flex h-[300px] flex-col pr-2">
+          <div className="w-1/2 flex-1  flex h-[300px] flex-col pr-2">
             <div className="flex items-center gap-3 py-1">
               <div>
                 {" "}
@@ -57,7 +57,7 @@ const CommentDialog = ({ open, setOpen }) => {
                     </Avatar>
                     <div className="flex flex-col ml-1 flex-1">
                       <div className="flex flex-wrap">
-                        <span className="text-xs font-medium">
+                        <span className="text-xs font-medium max-w-32 break-words">
                           {comment?.author?.username ?? "user"}
                           <span className="text-xs font-normal ml-1">
                             {comment?.text ?? ""}
