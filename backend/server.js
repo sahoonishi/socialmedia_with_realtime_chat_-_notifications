@@ -16,7 +16,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
 const corsOptions = {
-  origin: "https://threadlynew.vercel.app",
+  // origin: "https://threadlynew.vercel.app",
+  origin: true,
   credentials: true,
 };
 app.use(cors(corsOptions));
