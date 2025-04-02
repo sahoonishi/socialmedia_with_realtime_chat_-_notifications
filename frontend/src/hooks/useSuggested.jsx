@@ -11,7 +11,7 @@ const useSuggested = () => {
       
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/user/suggested`,
+          `${import.meta.env.VITE_API_URL}/user/suggested`,
           { withCredentials: true }
         );
         if (res.data.success) {
