@@ -16,10 +16,22 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://threadlynew.vercel.app",
   credentials: true,
 };
 app.use(cors(corsOptions));
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5173", "https://your-frontend-domain.com"],
+//     credentials: true, // Allow cookies and authentication headers
+//   })
+// );
+// app.use(
+//   cors({
+//     origin: true,  // Allow all origins temporarily for testing
+//     credentials: true,
+//   })
+// );
 
 // -----------------ROUTES-----------------
 app.use("/api/user", userRouter);
