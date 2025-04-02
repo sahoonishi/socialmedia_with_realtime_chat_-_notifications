@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 // import { logout } from "./UserController";
 import getDataUri from "./../utils/dataURI.js";
-import { Post } from "../models/Post.model.js";
+import { Post } from "../models/post.model.js";
 import cloudinary from "../utils/cloudinary.js";
 // REGISTER
 export const register = async (req, res) => {
@@ -118,7 +118,7 @@ export const getProfile = async (req, res) => {
     const userid = req.params.id;
     let user = await User.findById(userid)
       .select("-password")
-      .populate({ path: "posts", options:{sort:{createdAt:-1}} })
+      .populate({ path: "posts", options: { sort: { createdAt: -1 } } })
       .populate("bookmarks");
     return res.status(200).json({
       message: "Profile found",

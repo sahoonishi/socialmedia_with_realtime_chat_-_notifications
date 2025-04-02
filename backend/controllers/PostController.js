@@ -1,4 +1,4 @@
-import { Post } from "../models/Post.model.js";
+import { Post } from "../models/post.model.js";
 import sharp from "sharp";
 import cloudinary from "./../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
@@ -149,7 +149,9 @@ export const disLikePost = async (req, res) => {
     await post.save();
 
     // IMPLEMENT REALTIME NOTIFICATION WITH SOCKET.IO
-    const user = await User.findById(whoDisLikes_id).select("username profilepic");
+    const user = await User.findById(whoDisLikes_id).select(
+      "username profilepic"
+    );
     const postOwnerId = post.author.toString();
     if (postOwnerId !== whoDisLikes_id) {
       const notification = {
