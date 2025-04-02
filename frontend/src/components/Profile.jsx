@@ -31,6 +31,8 @@ const Profile = () => {
             withCredentials: true,
           }
         );
+        console.log("Response Headers:", res.headers);
+        console.log("Response Data:", res.data);
         if (res.data.suucess) {
           setAllPosts(res.data.posts);
         }
