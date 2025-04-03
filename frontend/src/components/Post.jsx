@@ -94,6 +94,7 @@ const Post = ({ post }) => {
     }
   };
   const commentHandler = async () => {
+    if (!user) return toast.error(" Please Login");
     try {
       const res = await axios.post(
         `https://socialmedia-with-realtime-chat.onrender.com/api/post/${post._id}/addcomment`,
@@ -138,6 +139,7 @@ const Post = ({ post }) => {
     }
   };
   const deletePost = async () => {
+    if (!user) return toast.error(" Please Login");
     try {
       const res = await axios.delete(
         `https://socialmedia-with-realtime-chat.onrender.com/api/post/delete/${post._id}`,
@@ -161,6 +163,7 @@ const Post = ({ post }) => {
     }
   };
   const bookmarkHandler = async () => {
+    if (!user) return toast.error(" Please Login");
     try {
       const res = await axios.get(
         `https://socialmedia-with-realtime-chat.onrender.com/api/post/${post._id}/bookmark`,
