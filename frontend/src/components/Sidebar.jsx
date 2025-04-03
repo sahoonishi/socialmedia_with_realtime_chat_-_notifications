@@ -56,7 +56,12 @@ const Sidebar = () => {
     } else if (textType === "Create") {
       setOpen(true);
     } else if (textType === "Profile") {
-      navigate(`/profile/${user?.username}`);
+      if(user) {
+        navigate(`/profile/${user?.username}`);
+      }else{
+        navigate(`/login`);
+      }
+      
     } else if (textType === "Home") {
       navigate(`/`);
     } else if (textType === "Messages") {
