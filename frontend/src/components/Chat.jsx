@@ -58,7 +58,7 @@ const Chat = () => {
           <h1 className="top-0 bg-white z-50 dark:bg-black  sticky  text-xl font-bold underline p-2">
             {user.username}
           </h1>
-          <div className="mt-2 overflow-y-auto h-52 md:h-60">
+          <div className="mt-2 overflow-y-auto h-[70vh]">
             {suggested?.map((userr) => {
               const isOnline = onlineUsers?.includes(userr._id);
               return (
