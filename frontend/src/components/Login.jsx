@@ -35,6 +35,7 @@ const Login = () => {
       );
       if (res.data.success) {
         dispatch(setAuthUser(res.data.user));
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         toast.success(res.data.message);
         setInput({
           email: "",
