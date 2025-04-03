@@ -40,11 +40,11 @@ const RightSidebar = () => {
           </div>
           <div className="font-medium">See All</div>
         </div>
-        <div className="mt-6 overflow-y-auto ">
+        <div className="mt-6 overflow-y-auto max-h-14">
           {suggested?.length > 0 &&
             suggested?.map((user) => {
               return (
-                <div key={user._id} className="flex overflow-y-auto space-y-2 justify-between pr-6 items-center">
+                <div key={user._id} className="flex space-y-2 justify-between pr-6 items-center">
                   <Link onClick={handleNavigation} to={`/profile/${user.username}`} className="flex gap-2 items-center">
                     <Avatar>
                       <AvatarImage
