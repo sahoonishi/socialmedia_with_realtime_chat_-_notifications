@@ -24,7 +24,7 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:8080/api/user/login",
+        "https://socialmedia-with-realtime-chat.onrender.com/api/user/login",
         input,
         {
           headers: {
@@ -78,9 +78,15 @@ const Login = () => {
           />
         </div>
         {loading ? (
-          <Button> <Loader2 className="mr-2 cursor-not-allowed animate-spin size-4"/>Please wait...</Button>
+          <Button>
+            {" "}
+            <Loader2 className="mr-2 cursor-not-allowed animate-spin size-4" />
+            Please wait...
+          </Button>
         ) : (
-          <Button type="submit" className="cursor-pointer">Login</Button>
+          <Button type="submit" className="cursor-pointer">
+            Login
+          </Button>
         )}
 
         <div className="text-center">

@@ -16,13 +16,16 @@ const App = () => {
   const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const [socket, setSocket] = useState(null); // ✅ Use local state for socket
-  
+
   useEffect(() => {
     if (user) {
-      const socketio = io("http://localhost:8080", {
-        query: { userId: user._id },
-        transports: ["websocket"],
-      });
+      const socketio = io(
+        "https://socialmedia-with-realtime-chat.onrender.com",
+        {
+          query: { userId: user._id },
+          transports: ["websocket"],
+        }
+      );
 
       setSocket(socketio); // ✅ Store socket in React state instead of Redux
 

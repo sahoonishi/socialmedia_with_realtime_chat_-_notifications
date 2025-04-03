@@ -13,7 +13,7 @@ const Signup = () => {
     password: "",
   });
   const navigate = useNavigate();
-  const [loading , setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
   const changeHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -22,7 +22,7 @@ const Signup = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:8080/api/user/register",
+        "https://socialmedia-with-realtime-chat.onrender.com/api/user/register",
         input,
         {
           headers: {
@@ -37,13 +37,13 @@ const Signup = () => {
           username: "",
           email: "",
           password: "",
-        })
+        });
         navigate("/login");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -86,11 +86,22 @@ const Signup = () => {
           />
         </div>
         {loading ? (
-          <Button> <Loader2 className="mr-2 animate-spin size-4 cursor-not-allowed"/>Please wait...</Button>
+          <Button>
+            {" "}
+            <Loader2 className="mr-2 animate-spin size-4 cursor-not-allowed" />
+            Please wait...
+          </Button>
         ) : (
-          <Button type="submit" className="cursor-pointer">Sign up</Button>
+          <Button type="submit" className="cursor-pointer">
+            Sign up
+          </Button>
         )}
-        <div className="text-center">Already have an account ? <Link to="/login" className="text-blue-600">login</Link></div>
+        <div className="text-center">
+          Already have an account ?{" "}
+          <Link to="/login" className="text-blue-600">
+            login
+          </Link>
+        </div>
       </form>
     </div>
   );
