@@ -19,6 +19,7 @@ const Profile = () => {
   // console.log(show);
   // console.log(name);
   const { user } = useSelector((store) => store.auth);
+  console.log(name,user.username);
   useGetUserProfile(user?._id);
   const { suggested } = useSelector((store) => store.auth);
   const { userprofile } = useSelector((store) => store.auth);
@@ -204,7 +205,7 @@ const Profile = () => {
                 </div>
               ) : (
                 <>
-                  {userprofile?.bookmarks &&
+                  {name ===user.username && userprofile?.bookmarks &&
                   userprofile?.bookmarks.length > 0 ? (
                     <div className="my-2 grid grid-cols-2 md:grid-cols-3 overflow-y-auto gap-2">
                       {userprofile?.bookmarks?.map((post) => {
