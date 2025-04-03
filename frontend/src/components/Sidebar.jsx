@@ -32,7 +32,7 @@ const Sidebar = () => {
   const logoutHandler = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/user/logout`,
+        `https://socialmedia-with-realtime-chat.onrender.com/api/user/logout`,
         {
           withCredentials: true,
         }
@@ -61,12 +61,12 @@ const Sidebar = () => {
       navigate(`/`);
     } else if (textType === "Messages") {
       navigate(`/chat`);
-    }else if (textType === "") {
+    } else if (textType === "") {
       navigate(`/`);
     }
   };
   const items = [
-    { icons: <Logo/>, text: "" },
+    { icons: <Logo />, text: "" },
     { icons: <Home />, text: "Home" },
     { icons: <Search />, text: "Search" },
     { icons: <TrendingUp />, text: "Explore" },

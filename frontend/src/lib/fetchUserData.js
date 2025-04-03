@@ -3,7 +3,7 @@ import axios from "axios";
 export const fetchUserData = async (id) => {
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_API_URL}/user/${id}/profile`,
+      `https://socialmedia-with-realtime-chat.onrender.com/api/user/${id}/profile`,
       {
         withCredentials: true,
       }

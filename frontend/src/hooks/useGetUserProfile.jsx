@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
   useEffect(()=>{
     const fetchProfile = async()=>{
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/${id}/profile`,{withCredentials:true});
+        const res = await axios.get(`https://socialmedia-with-realtime-chat.onrender.com/api/user/${id}/profile`,{withCredentials:true});
         if(res.data.success){
           console.log(res.data.user);
           dispatch(setProfile(res.data.user));

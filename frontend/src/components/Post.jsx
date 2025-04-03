@@ -22,8 +22,10 @@ const Post = ({ post }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false); // Only for CommentDialog
   const [dialogOpen, setDialogOpen] = useState(false); // For controlling the dialog
-  const { user,userprofile } = useSelector((store) => store.auth);
-  const [mark, setMark] = useState(userprofile?.bookmarks?.some((a)=>a._id===post._id)); // Only for Bookmark
+  const { user, userprofile } = useSelector((store) => store.auth);
+  const [mark, setMark] = useState(
+    userprofile?.bookmarks?.some((a) => a._id === post._id)
+  ); // Only for Bookmark
   const { posts } = useSelector((store) => store.post);
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(post?.likes?.includes(user?._id) || false);
@@ -41,7 +43,7 @@ const Post = ({ post }) => {
     try {
       const action = liked ? "dislikes" : "likes";
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/post/${post._id}/${action}`,
+        `https://socialmedia-with-realtime-chat.onrender.com/api/post/${post._id}/${action}`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -86,7 +88,7 @@ const Post = ({ post }) => {
   const commentHandler = async () => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/post/${post._id}/addcomment`,
+        `https://socialmedia-with-realtime-chat.onrender.com/api/post/${post._id}/addcomment`,
         { text },
         {
           headers: {
@@ -129,7 +131,7 @@ const Post = ({ post }) => {
   const deletePost = async () => {
     try {
       const res = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/post/delete/${post._id}`,
+        `https://socialmedia-with-realtime-chat.onrender.com/api/post/delete/${post._id}`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -149,21 +151,27 @@ const Post = ({ post }) => {
       toast.error(error.response?.data?.message);
     }
   };
-  const bookmarkHandler=async()=>{
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/post/${post._id}/bookmark`,{withCredentials:true});
-        if(res.data.success){
-          toast.success(res.data.message);
-          setMark((prev) => !prev); 
-        }
-      } catch (error) {
-        console.log(error);
+  const bookmarkHandler = async () => {
+    try {
+      const res = await axios.get(
+        `https://socialmedia-with-realtime-chat.onrender.com/api/post/${post._id}/bookmark`,
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setMark((prev) => !prev);
       }
-  }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className=" flex flex-col w-[90vw] md:w-72 lg:w-96 max-h-sm">
       <div className="flex justify-between items-center">
-        <Link to={`/profile/${post?.author?.username}`} className="flex items-center gap-1">
+        <Link
+          to={`/profile/${post?.author?.username}`}
+          className="flex items-center gap-1"
+        >
           <Avatar>
             <AvatarImage
               src={post?.author?.profilepic}
@@ -227,7 +235,11 @@ const Post = ({ post }) => {
           />
           <Send size={25} />
         </div>
-        <Bookmark onClick={bookmarkHandler} className={`${mark ? "fill-black dark:fill-white" :"" }`} size={25} />
+        <Bookmark
+          onClick={bookmarkHandler}
+          className={`${mark ? "fill-black dark:fill-white" : ""}`}
+          size={25}
+        />
       </div>
       <div>
         <span className="block font-semibold ">{totalLikes} likes</span>

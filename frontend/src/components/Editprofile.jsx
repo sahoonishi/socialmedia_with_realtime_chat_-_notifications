@@ -10,7 +10,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import axios from "axios";
 import { setAuthUser } from "../redux/authSlice";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 const Editprofile = () => {
   const imageRef = useRef();
@@ -42,7 +49,7 @@ const Editprofile = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/profile/edit`,
+        `https://socialmedia-with-realtime-chat.onrender.com/api/user/profile/edit`,
         formData,
         {
           headers: {
@@ -133,10 +140,7 @@ const Editprofile = () => {
               <Loader2 className="size-4 animate-spin" /> Sumbit
             </Button>
           ) : (
-            <Button
-              onClick={editProfileHandler}
-              className="w-fit px-8"
-            >
+            <Button onClick={editProfileHandler} className="w-fit px-8">
               Sumbit
             </Button>
           )}

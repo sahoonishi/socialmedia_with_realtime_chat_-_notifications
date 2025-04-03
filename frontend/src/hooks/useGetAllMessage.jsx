@@ -10,7 +10,7 @@ const useGetAllMessage =() => {
   useEffect(() => {
     const fetchAllMessage = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/message/all/${selectedUser._id}`, {
+        const res = await axios.get(`https://socialmedia-with-realtime-chat.onrender.com/api/message/all/${selectedUser._id}`, {
           withCredentials: true,
         });
         // console.log(res.data);

@@ -8,7 +8,7 @@ const useGetAllPost =() => {
   useEffect(() => {
     const fetchAllPost = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/post/getallposts`, {
+        const res = await axios.get(`https://socialmedia-with-realtime-chat.onrender.com/api/post/getallposts`, {
           withCredentials: true,
         });
         // console.log(res.data);

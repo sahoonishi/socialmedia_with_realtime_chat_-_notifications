@@ -17,7 +17,7 @@ const Chat = () => {
   const messageHandler = async (recieverId) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/message/send/${recieverId}`,
+        `https://socialmedia-with-realtime-chat.onrender.com/api/message/send/${recieverId}`,
         { message },
         {
           headers: {
@@ -65,7 +65,9 @@ const Chat = () => {
                 <div
                   onClick={() => dispatch(setSelectedUser(userr))}
                   key={userr._id}
-                  className={`border cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 flex items-center gap-1 text-sm px-1 py-2 transition-colors ${user._id ===userr._id ? "hidden":"" }`}
+                  className={`border cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 flex items-center gap-1 text-sm px-1 py-2 transition-colors ${
+                    user._id === userr._id ? "hidden" : ""
+                  }`}
                 >
                   <Avatar className="size-10">
                     <AvatarImage
@@ -129,7 +131,10 @@ const Chat = () => {
             </>
           ) : (
             <div className="hidden md:flex h-full justify-center items-center">
-              Click User to send <div className="bg-sky-400 px-2 py-1 ml-2 rounded-md">Message</div>
+              Click User to send{" "}
+              <div className="bg-sky-400 px-2 py-1 ml-2 rounded-md">
+                Message
+              </div>
             </div>
           )}
         </div>

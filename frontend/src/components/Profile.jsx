@@ -19,7 +19,7 @@ const Profile = () => {
   // console.log(show);
   // console.log(name);
   const { user } = useSelector((store) => store.auth);
-  console.log(name,user.username);
+  console.log(name, user.username);
   useGetUserProfile(user?._id);
   const { suggested } = useSelector((store) => store.auth);
   const { userprofile } = useSelector((store) => store.auth);
@@ -27,7 +27,7 @@ const Profile = () => {
     const fetchAllPosts = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/post/getyourposts`,
+          `https://socialmedia-with-realtime-chat.onrender.com/api/post/getyourposts`,
           {
             withCredentials: true,
           }
@@ -205,7 +205,8 @@ const Profile = () => {
                 </div>
               ) : (
                 <>
-                  {name ===user.username && userprofile?.bookmarks &&
+                  {name === user.username &&
+                  userprofile?.bookmarks &&
                   userprofile?.bookmarks.length > 0 ? (
                     <div className="my-2 grid grid-cols-2 md:grid-cols-3 overflow-y-auto gap-2">
                       {userprofile?.bookmarks?.map((post) => {

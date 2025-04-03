@@ -15,8 +15,8 @@ const CreatePost = ({ open, setOpen }) => {
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
-  const {user} = useSelector(store=>store.auth);
-  const {posts} = useSelector(store=>store.post);
+  const { user } = useSelector((store) => store.auth);
+  const { posts } = useSelector((store) => store.post);
   const imageRef = useRef();
   const dispatch = useDispatch();
   const imageHandler = async (e) => {
@@ -27,31 +27,43 @@ const CreatePost = ({ open, setOpen }) => {
       setImagePreview(dataURL);
     }
   };
-  const postHandler=async()=>{
+  const postHandler = async () => {
     const formData = new FormData();
-    formData.append("caption",caption);
-    if(imagePreview) formData.append("image",file);
+    formData.append("caption", caption);
+    if (imagePreview) formData.append("image", file);
     try {
-        setLoading(true);
-        const res = await axios.post(`${import.meta.env.VITE_API_URL}/post/addpost`,formData,{
-          headers:{
-            'Content-Type':'multipart/form-data'
+      setLoading(true);
+      const res = await axios.post(
+        `https://socialmedia-with-realtime-chat.onrender.com/api/post/addpost`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-          withCredentials:true
-        });
-        if(res.data.successs){
-          toast.success(res.data.message);
-          dispatch(setPosts([...posts, res.data.post].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))));
-          dispatch(setAuthUser({...user,posts:[...user.posts , res.data.post]}));
-          setOpen(false);
+          withCredentials: true,
         }
+      );
+      if (res.data.successs) {
+        toast.success(res.data.message);
+        dispatch(
+          setPosts(
+            [...posts, res.data.post].sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            )
+          )
+        );
+        dispatch(
+          setAuthUser({ ...user, posts: [...user.posts, res.data.post] })
+        );
+        setOpen(false);
+      }
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message);
-    }finally{
+    } finally {
       setLoading(false);
     }
-  }
+  };
   return (
     <Dialog open={open}>
       <DialogContent onInteractOutside={() => setOpen(false)}>
@@ -60,19 +72,27 @@ const CreatePost = ({ open, setOpen }) => {
         </DialogHeader>
         <div className="flex gap-3 items-center">
           <Avatar>
-            <AvatarImage src={user?.profilepic} alt="img" className="object-cover"/>
+            <AvatarImage
+              src={user?.profilepic}
+              alt="img"
+              className="object-cover"
+            />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xs font-semibold">{user?.username ?? "user"}</h1>
-            <div className="text-gray-400 text-xs truncate max-w-16">{user?.bio ?? ""}</div>
+            <h1 className="text-xs font-semibold">
+              {user?.username ?? "user"}
+            </h1>
+            <div className="text-gray-400 text-xs truncate max-w-16">
+              {user?.bio ?? ""}
+            </div>
           </div>
         </div>
         <Textarea
-        value={caption}
-        onChange={(e)=>setCaption(e.target.value)}
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
           className="border focus-visible:ring-transparent"
-          placeholder="caption..." 
+          placeholder="caption..."
         />
         {imagePreview && (
           <div className="w-full h-64 flex justify-center items-center">
@@ -102,7 +122,13 @@ const CreatePost = ({ open, setOpen }) => {
               posting...
             </Button>
           ) : (
-            <Button onClick={postHandler} type="submit" className="w-fit mx-auto">Share with friends</Button>
+            <Button
+              onClick={postHandler}
+              type="submit"
+              className="w-fit mx-auto"
+            >
+              Share with friends
+            </Button>
           ))}
       </DialogContent>
     </Dialog>

@@ -22,13 +22,12 @@
 //     const navigate = useNavigate();
 //     const dispatch = useDispatch();
 //     const { user } = useSelector((store) => store.auth);
-    
-  
+
 //     //LOGOUT FUNCTION
 //     const logoutHandler = async () => {
 //       try {
 //         const res = await axios.get(
-//           `${import.meta.env.VITE_API_URL}/user/logout`,
+//           `https://socialmedia-with-realtime-chat.onrender.com/api/user/logout`,
 //           {
 //             withCredentials: true,
 //           }
@@ -61,7 +60,7 @@
 //     // { icons: <TrendingUp />, text: "Explore" },
 //     { icons: <MessageCircle />, text: "Messages" },
 //     { icons: <Heart />, text: "Notifications" },
-    
+
 //     {
 //       icons: (
 //         <Avatar>
@@ -129,7 +128,7 @@ const Sidebar = () => {
   const logoutHandler = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/user/logout`,
+        `https://socialmedia-with-realtime-chat.onrender.com/api/user/logout`,
         {
           withCredentials: true,
         }
