@@ -17,12 +17,20 @@ import { setPosts, setSelectedPost } from "../redux/postSlice";
 import { formatDistanceToNow } from "date-fns";
 import { setAuthUser } from "../redux/authSlice";
 import { fetchUserData } from "../lib/fetchUserData";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Post = ({ post }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false); // Only for CommentDialog
   const [dialogOpen, setDialogOpen] = useState(false); // For controlling the dialog
   const { user, userprofile } = useSelector((store) => store.auth);
+  const navigate = useNavigate();
+
+  const handleNavigation = (e) => {
+    if (!user) {
+      e.preventDefault(); // Prevent default <Link> behavior
+      navigate("/login"); // Redirect to login
+    }
+  };
   const [mark, setMark] = useState(
     userprofile?.bookmarks?.some((a) => a._id === post._id)
   ); // Only for Bookmark
@@ -171,6 +179,7 @@ const Post = ({ post }) => {
         <Link
           to={`/profile/${post?.author?.username}`}
           className="flex items-center gap-1"
+          onClick={handleNavigation}
         >
           <Avatar>
             <AvatarImage

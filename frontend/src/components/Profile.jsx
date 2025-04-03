@@ -15,18 +15,13 @@ import useGetUserProfile from "../hooks/useGetUserProfile";
 const Profile = () => {
   const navigate = useNavigate();
   const { user } = useSelector((store) => store.auth);
-  useEffect(()=>{
-    console.log(user);
-    if(user===null) navigate("/login");
 
-  },[user]);
-  
   const { name } = useParams();
   const [show, setShow] = useState("Posts");
   const [allPosts, setAllPosts] = useState();
   // console.log(show);
   // console.log(name);
-  
+
   useGetUserProfile(user?._id);
   const { suggested } = useSelector((store) => store.auth);
   const { userprofile } = useSelector((store) => store.auth);
@@ -39,7 +34,7 @@ const Profile = () => {
             withCredentials: true,
           }
         );
-        
+
         if (res.data.suucess) {
           setAllPosts(res.data.posts);
         }
@@ -58,7 +53,6 @@ const Profile = () => {
     otherUser = suggested.filter((user) => user.username === name);
   } else {
     toast.error("User not found");
-    
   }
   return (
     <Layout>
