@@ -54,20 +54,29 @@ const Sidebar = () => {
     if (textType === "Logout") {
       logoutHandler();
     } else if (textType === "Create") {
-      setOpen(true);
-    } else if (textType === "Profile") {
-      if(user) {
-        navigate(`/profile/${user?.username}`);
-      }else{
+      if (user) {
+        setOpen(true);
+      } else {
         navigate(`/login`);
       }
-      
+    } else if (textType === "Profile") {
+      if (user) {
+        navigate(`/profile/${user?.username}`);
+      } else {
+        navigate(`/login`);
+      }
     } else if (textType === "Home") {
       navigate(`/`);
     } else if (textType === "Messages") {
-      navigate(`/chat`);
+      if (user) {
+        navigate(`/chat`);
+      } else {
+        navigate(`/login`);
+      }
     } else if (textType === "") {
       navigate(`/`);
+    } else if (textType === "Login") {
+      navigate(`/login`);
     }
   };
   const items = [
@@ -87,7 +96,7 @@ const Sidebar = () => {
       ),
       text: "Profile",
     },
-    { icons: <LogOut />, text: "Logout" },
+    { icons: user ? <LogOut /> : <LogOut />, text: user ? "Logout" : "Login" },
   ];
   return (
     <div className="hidden py-4 border-r border-gray-800 dark:border-gray-600 px-2 md:flex flex-col justify-around w-[25%]">

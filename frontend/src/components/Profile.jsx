@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 // import { useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -13,13 +13,15 @@ import axios from "axios";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
+  if(!user) navigate("/login");
   const { name } = useParams();
   const [show, setShow] = useState("Posts");
   const [allPosts, setAllPosts] = useState();
   // console.log(show);
   // console.log(name);
-  const { user } = useSelector((store) => store.auth);
-  console.log(name, user.username);
+  
   useGetUserProfile(user?._id);
   const { suggested } = useSelector((store) => store.auth);
   const { userprofile } = useSelector((store) => store.auth);
