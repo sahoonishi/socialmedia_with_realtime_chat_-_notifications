@@ -7,7 +7,6 @@ const RightSidebar = () => {
   // console.log(user);
   // console.log(suggested);
   const navigate = useNavigate();
-
   const handleNavigation = (e) => {
     if (!user) {
       e.preventDefault(); // Prevent default <Link> behavior !IMPORTANT
@@ -46,7 +45,7 @@ const RightSidebar = () => {
             suggested?.map((user) => {
               return (
                 <div key={user._id} className="flex space-y-2 justify-between pr-6 items-center">
-                  <Link to={`/profile/${user.username}`} className="flex gap-2 items-center">
+                  <Link onClick={handleNavigation} to={`/profile/${user.username}`} className="flex gap-2 items-center">
                     <Avatar>
                       <AvatarImage
                         src={user?.profilepic}

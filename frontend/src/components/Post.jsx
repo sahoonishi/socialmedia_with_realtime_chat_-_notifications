@@ -133,6 +133,7 @@ const Post = ({ post }) => {
         setText("");
       }
     } catch (error) {
+      toast.error(error?.response?.data?.message);
       console.log(error);
     }
   };
@@ -170,6 +171,7 @@ const Post = ({ post }) => {
         setMark((prev) => !prev);
       }
     } catch (error) {
+      toast.error(error?.response?.data?.message);
       console.log(error);
     }
   };
