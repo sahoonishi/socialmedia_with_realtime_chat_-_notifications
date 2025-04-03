@@ -36,7 +36,7 @@ const Profile = () => {
         );
 
         if (res.data.suucess) {
-          setAllPosts(res.data.posts);
+          setAllPosts(res?.data?.posts);
         }
       } catch (error) {
         console.log(error);
@@ -153,7 +153,7 @@ const Profile = () => {
               {show === "Posts" ? (
                 <div className="my-2 grid grid-cols-2 md:grid-cols-3 overflow-y-auto gap-2">
                   {name !== user.username
-                    ? otherUser[0].posts?.map((post) => {
+                    ? otherUser[0]?.posts?.map((post) => {
                         return (
                           <div
                             key={post._id}
