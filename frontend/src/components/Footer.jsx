@@ -150,13 +150,29 @@ const Sidebar = () => {
     if (textType === "Logout") {
       logoutHandler();
     } else if (textType === "Create") {
-      setOpen(true);
+      if (user) {
+        setOpen(true);
+      } else {
+        navigate(`/login`);
+      }
     } else if (textType === "Profile") {
-      navigate(`/profile/${user?.username}`);
+      if (user) {
+        navigate(`/profile/${user?.username}`);
+      } else {
+        navigate(`/login`);
+      }
     } else if (textType === "Home") {
       navigate(`/`);
     } else if (textType === "Messages") {
-      navigate(`/chat`);
+      if (user) {
+        navigate(`/chat`);
+      } else {
+        navigate(`/login`);
+      }
+    } else if (textType === "") {
+      navigate(`/`);
+    } else if (textType === "Login") {
+      navigate(`/login`);
     }
   };
   const items = [
@@ -176,7 +192,7 @@ const Sidebar = () => {
       ),
       text: "Profile",
     },
-    { icons: <LogOut />, text: "Logout" },
+    { icons: user ? <LogOut /> : <LogOut />, text: user ? "Logout" : "Login" },
   ];
   return (
     <div className="md:hidden sticky w-full bottom-0 flex justify-around bg-white dark:bg-gray-900">
