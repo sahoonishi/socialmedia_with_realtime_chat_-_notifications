@@ -16,7 +16,9 @@ const Profile = () => {
   const navigate = useNavigate();
   const { user } = useSelector((store) => store.auth);
   useEffect(()=>{
+    console.log(user);
     if(user===null) navigate("/login");
+
   },[user]);
   
   const { name } = useParams();
@@ -37,8 +39,7 @@ const Profile = () => {
             withCredentials: true,
           }
         );
-        console.log("Response Headers:", res.headers);
-        console.log("Response Data:", res.data);
+        
         if (res.data.suucess) {
           setAllPosts(res.data.posts);
         }
@@ -57,9 +58,8 @@ const Profile = () => {
     otherUser = suggested.filter((user) => user.username === name);
   } else {
     toast.error("User not found");
-    console.log("No user");
+    
   }
-  console.log(otherUser);
   return (
     <Layout>
       {otherUser && (
