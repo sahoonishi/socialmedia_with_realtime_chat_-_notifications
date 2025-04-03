@@ -15,7 +15,10 @@ import useGetUserProfile from "../hooks/useGetUserProfile";
 const Profile = () => {
   const navigate = useNavigate();
   const { user } = useSelector((store) => store.auth);
-  if(user===null) navigate("/login");
+  useEffect(()=>{
+    if(user===null) navigate("/login");
+  },[user]);
+  
   const { name } = useParams();
   const [show, setShow] = useState("Posts");
   const [allPosts, setAllPosts] = useState();
