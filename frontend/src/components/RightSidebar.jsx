@@ -1,14 +1,22 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const RightSidebar = () => {
   const { user, suggested } = useSelector((store) => store.auth);
   // console.log(user);
   // console.log(suggested);
+  const navigate = useNavigate();
+
+  const handleNavigation = (e) => {
+    if (!user) {
+      e.preventDefault(); // Prevent default <Link> behavior !IMPORTANT
+      navigate("/login"); // Redirect to login
+    }
+  };
   return (
     <div className="hidden md:block border-l border-gray-600 px-4 py-8 w-full max-w-[300px]">
-      <Link to={`/profile/${user?.username}`} className=" flex gap-2 items-center">
+      <Link onClick={handleNavigation} to={`/profile/${user?.username}`} className=" flex gap-2 items-center">
         <Avatar>
           <AvatarImage
             src={user?.profilepic}
