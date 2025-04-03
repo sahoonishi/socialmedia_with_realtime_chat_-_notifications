@@ -40,7 +40,7 @@ const RightSidebar = () => {
           </div>
           <div className="font-medium">See All</div>
         </div>
-        <div className="mt-6 overflow-y-auto max-h-14">
+        <div className="mt-6 overflow-y-auto max-h-20 lg:max-h-40">
           {suggested?.length > 0 &&
             suggested?.map((user) => {
               return (
