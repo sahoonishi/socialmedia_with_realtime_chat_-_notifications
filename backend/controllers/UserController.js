@@ -209,7 +209,7 @@ export const followUnfollow = async (req, res) => {
       // unfollow logic
       await Promise.all([
         User.updateOne({ _id: sourceId }, { $pull: { following: targetId } }),
-        User.updateOne({ _id: targetId }, { $pull: { following: sourceId } }),
+        User.updateOne({ _id: targetId }, { $pull: { follower: sourceId } }),
       ]);
       return res.status(200).json({
         message: `You have unfollowed ${targetuser.username}`,
